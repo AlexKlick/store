@@ -45,7 +45,6 @@ class MarketTest < Minitest::Test
     @market.add_vendor(@vendor1)
     @market.add_vendor(@vendor2)
     @market.add_vendor(@vendor3)
-    binding.pry
     assert_equal @market.vendors_that_sell(@item1), [@vendor1, @vendor3]
     assert_equal @market.vendors_that_sell(@item4), [@vendor2]
   end
@@ -67,28 +66,50 @@ class MarketTest < Minitest::Test
     assert_equal @vendor3.potential_revenue, 48.75
   end
   def test_total_inv
+    skip
+    @vendor1.stock(@item1, 35)
+    @vendor1.stock(@item2, 7)
+    @vendor2 = Vendor.new("Ba-Nom-a-Nom")
+    @vendor2.stock(@item4, 50)
+    @vendor2.stock(@item3, 25)
+    @vendor3 = Vendor.new("Palisade Peach Shack")
+    @vendor3.stock(@item1, 65)
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
     test = {
-      #<Item:0x007f9c56740d48...> => {
+      @item1=> {
         quantity: 100,
-        vendors: [#<Vendor:0x00007fe1348a1160...>, #<Vendor:0x00007fe134910650...>]
+        vendors: [@vendor1, @vendor3]
       },
-      #<Item:0x007f9c565c0ce8...> => {
+      @item2 => {
         quantity: 7,
-        vendors: [#<Vendor:0x00007fe1348a1160...>]
+        vendors: [@vendor1]
       },
-      #<Item:0x007f9c56343038...> => {
+      @item3 => {
         quantity: 50,
-        vendors: [#<Vendor:0x00007fe1349bed40...>]
+        vendors: [@vendor2]
       },
-      #<Item:0x007f9c562a5f18...> => {
+      @item4 => {
         quantity: 35,
-        vendors: [#<Vendor:0x00007fe1349bed40...>, #<Vendor:0x00007fe134910650...>]
+        vendors: [@vendor2]
       },
     }
     assert_equal @market.total_inventory, test
   end
 
   def test_overstocked_items
-    
+    @vendor1.stock(@item1, 35)
+    @vendor1.stock(@item2, 7)
+    @vendor2 = Vendor.new("Ba-Nom-a-Nom")
+    @vendor2.stock(@item4, 50)
+    @vendor2.stock(@item3, 25)
+    @vendor3 = Vendor.new("Palisade Peach Shack")
+    @vendor3.stock(@item1, 65)
+    @market.add_vendor(@vendor1)
+    @market.add_vendor(@vendor2)
+    @market.add_vendor(@vendor3)
+    binding.pry
+    assert_equal @market.overstocked_items, [@item1]
   end
 end

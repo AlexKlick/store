@@ -22,4 +22,6 @@ class Vendor
     @inventory.each{|inv| total = total + inv[0].price[1..-1].to_f * inv[1]}
     total
   end
+
+  
 end

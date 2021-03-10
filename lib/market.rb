@@ -62,4 +62,19 @@ class Market
   def overstocked_items
     total_inventory.find_all{|item| item[1][:quantity] > 50 || item[1][:vendors].length > 1}.map{|item| item[0]}
   end
+
+  def sell(item, quantity)
+    if item_total_q(item) < quantity
+      false
+    else
+      total_inventory.find{|it| it[0] == item}
+      # if first_vendor[:quantity] < quantity
+      #   'nothing'
+      # else
+      #   first_vendor[:quantity] = first_vendor[:quantity] - quantity
+      # end
+      # true
+
+    end
+  end
 end
